@@ -1,1 +1,30 @@
+pipeline {
+    agent any
+
+    environment {
+        SONAR_URL = "http://54.167.196.140:9000/"
+    }
+
+    stages {
+        stage('Say Hi') {
+            steps {
+                sh 'echo "Hello World"'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'test', variable: 'SONAR_AUTH_TOKEN')]) {
+                    sh '''
+                    /var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarScanner/bin/sonar-scanner \
+                      -Dsonar.projectKey=my-project \
+                      -Dsonar.sources=. \
+                      -Dsonar.host.url=$SONAR_URL \
+                      -Dsonar.login=$SONAR_AUTH_TOKEN
+                    '''
+                }
+            }
+        }
+    }
+}
 
