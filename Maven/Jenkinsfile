@@ -1,0 +1,17 @@
+pipeline {
+  agent any
+
+  stages {
+    stage ('Hello') {
+	  steps {
+	    sh 'echo "Hello World"'
+		}
+		}
+	
+	stage ('Build and Test') {
+	  steps {
+	    sh 'cd Sonarqube && mvn clean package'  //path where pom.xml is present and other files
+		}
+	   }
+	  }
+	 }
